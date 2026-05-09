@@ -254,11 +254,9 @@ class _VinCalculatorScreenState extends State<VinCalculatorScreen> {
           fillColor: Colors.white.withValues(alpha: 0.05),
         ),
         onChanged: (value) {
-          if (_resultPassword.isNotEmpty) {
-            setState(() {
-              _resultPassword = '';
-            });
-          }
+          setState(() {
+            _resultPassword = '';
+          });
         },
       ),
     );
