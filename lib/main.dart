@@ -197,7 +197,7 @@ class _VinCalculatorScreenState extends State<VinCalculatorScreen> {
               Container(
                 padding: const EdgeInsets.all(8),
                 decoration: BoxDecoration(
-                  color: const Color(0xFF00D4FF).withOpacity( 0.2),
+                  color: const Color(0xFF00D4FF).withValues(alpha: 0.2),
                   borderRadius: BorderRadius.circular(8),
                 ),
                 child: const Icon(Icons.calendar_today, color: Color(0xFF00D4FF), size: 18),
@@ -236,22 +236,22 @@ class _VinCalculatorScreenState extends State<VinCalculatorScreen> {
           labelText: '请输入车架号',
           labelStyle: const TextStyle(color: Color(0xFF00D4FF)),
           hintText: '输入完整车架号...',
-          hintStyle: TextStyle(color: Colors.white.withOpacity( 0.3)),
+          hintStyle: TextStyle(color: Colors.white.withValues(alpha: 0.3)),
           prefixIcon: const Icon(Icons.directions_car, color: Color(0xFF00D4FF)),
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(12),
-            borderSide: BorderSide(color: const Color(0xFF00D4FF).withOpacity( 0.3)),
+            borderSide: BorderSide(color: const Color(0xFF00D4FF).withValues(alpha: 0.3)),
           ),
           enabledBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(12),
-            borderSide: BorderSide(color: const Color(0xFF00D4FF).withOpacity( 0.3)),
+            borderSide: BorderSide(color: const Color(0xFF00D4FF).withValues(alpha: 0.3)),
           ),
           focusedBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(12),
             borderSide: const BorderSide(color: Color(0xFF00D4FF), width: 2),
           ),
           filled: true,
-          fillColor: Colors.white.withOpacity( 0.05),
+          fillColor: Colors.white.withValues(alpha: 0.05),
         ),
         onChanged: (value) {
           if (_resultPassword.isNotEmpty) {
@@ -274,12 +274,12 @@ class _VinCalculatorScreenState extends State<VinCalculatorScreen> {
                 colors: [Color(0xFF00D4FF), Color(0xFF7B61FF)],
               )
             : null,
-        color: isEnabled ? null : Colors.grey.withOpacity( 0.3),
+        color: isEnabled ? null : Colors.grey.withValues(alpha: 0.3),
         borderRadius: BorderRadius.circular(16),
         boxShadow: isEnabled
             ? [
                 BoxShadow(
-                  color: const Color(0xFF00D4FF).withOpacity( 0.4),
+                  color: const Color(0xFF00D4FF).withValues(alpha: 0.4),
                   blurRadius: 20,
                   spreadRadius: 0,
                 ),
@@ -313,10 +313,10 @@ class _VinCalculatorScreenState extends State<VinCalculatorScreen> {
       decoration: BoxDecoration(
         color: const Color(0xFF1A1F3A),
         borderRadius: BorderRadius.circular(20),
-        border: Border.all(color: const Color(0xFF00D4FF).withOpacity( 0.5), width: 2),
+        border: Border.all(color: const Color(0xFF00D4FF).withValues(alpha: 0.5), width: 2),
         boxShadow: [
           BoxShadow(
-            color: const Color(0xFF00D4FF).withOpacity( 0.2),
+            color: const Color(0xFF00D4FF).withValues(alpha: 0.2),
             blurRadius: 20,
             spreadRadius: 0,
           ),
@@ -362,7 +362,7 @@ class _VinCalculatorScreenState extends State<VinCalculatorScreen> {
         gradient: LinearGradient(
           colors: [
             Colors.transparent,
-            const Color(0xFF00D4FF).withOpacity( 0.5),
+            const Color(0xFF00D4FF).withValues(alpha: 0.5),
             Colors.transparent,
           ],
         ),
@@ -390,7 +390,7 @@ class _VinCalculatorScreenState extends State<VinCalculatorScreen> {
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
               decoration: BoxDecoration(
-                color: const Color(0xFF00D4FF).withOpacity( 0.2),
+                color: const Color(0xFF00D4FF).withValues(alpha: 0.2),
                 borderRadius: BorderRadius.circular(12),
               ),
               child: Text(
@@ -456,10 +456,10 @@ class _GlassMorphismCard extends StatelessWidget {
         child: Container(
           padding: const EdgeInsets.all(20),
           decoration: BoxDecoration(
-            color: Colors.white.withOpacity( 0.08),
+            color: Colors.white.withValues(alpha: 0.08),
             borderRadius: BorderRadius.circular(16),
             border: Border.all(
-              color: Colors.white.withOpacity( 0.15),
+              color: Colors.white.withValues(alpha: 0.15),
               width: 1,
             ),
           ),
@@ -494,10 +494,10 @@ class HistoryItem extends StatelessWidget {
           child: Container(
             padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
             decoration: BoxDecoration(
-              color: Colors.white.withOpacity( 0.06),
+              color: Colors.white.withValues(alpha: 0.06),
               borderRadius: BorderRadius.circular(12),
               border: Border.all(
-                color: const Color(0xFF00D4FF).withOpacity( 0.2),
+                color: const Color(0xFF00D4FF).withValues(alpha: 0.2),
                 width: 1,
               ),
             ),
@@ -509,7 +509,7 @@ class HistoryItem extends StatelessWidget {
                     Container(
                       padding: const EdgeInsets.all(8),
                       decoration: BoxDecoration(
-                        color: const Color(0xFF00D4FF).withOpacity( 0.15),
+                        color: const Color(0xFF00D4FF).withValues(alpha: 0.15),
                         borderRadius: BorderRadius.circular(8),
                       ),
                       child: const Icon(Icons.directions_car, color: Color(0xFF00D4FF), size: 18),
