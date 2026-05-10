@@ -30,34 +30,46 @@ jobs:
       - name: Verify Flutter installation
         run: flutter doctor -v
 
-      - name: Build APK (Release)
-        run: flutter build apk --release --target-platform android-arm64
+      # Build ARM64 APK
+      - name: Build APK (ARM64)
+        run: flutter build apk --release --target-platform android-arm64 --build-name=${{ github.ref_name }}
 
-      - name: Upload APK
+      - name: Rename ARM64 APK
+        run: mv build/app/outputs/flutter-apk/app-release.apk build/app/outputs/flutter-apk/vin_calculator-arm64.apk
+
+      - name: Upload ARM64 APK
         uses: actions/upload-artifact@v4
         with:
           name: app-release-arm64
-          path: build/app/outputs/flutter-apk/app-release.apk
+          path: build/app/outputs/flutter-apk/vin_calculator-arm64.apk
           retention-days: 30
 
+      # Build ARM32 APK
       - name: Build APK (ARM32)
-        run: flutter build apk --release --target-platform android-arm
+        run: flutter build apk --release --target-platform android-arm --build-name=${{ github.ref_name }}
 
-      - name: Upload APK (ARM32)
+      - name: Rename ARM32 APK
+        run: mv build/app/outputs/flutter-apk/app-release.apk build/app/outputs/flutter-apk/vin_calculator-arm32.apk
+
+      - name: Upload ARM32 APK
         uses: actions/upload-artifact@v4
         with:
           name: app-release-arm32
-          path: build/app/outputs/flutter-apk/app-release.apk
+          path: build/app/outputs/flutter-apk/vin_calculator-arm32.apk
           retention-days: 30
 
+      # Build Universal APK
       - name: Build APK (Universal)
-        run: flutter build apk --release
+        run: flutter build apk --release --build-name=${{ github.ref_name }}
 
-      - name: Upload APK (Universal)
+      - name: Rename Universal APK
+        run: mv build/app/outputs/flutter-apk/app-release.apk build/app/outputs/flutter-apk/vin_calculator-universal.apk
+
+      - name: Upload Universal APK
         uses: actions/upload-artifact@v4
         with:
           name: app-release-universal
-          path: build/app/outputs/flutter-apk/app-release.apk
+          path: build/app/outputs/flutter-apk/vin_calculator-universal.apk
           retention-days: 30
 
       # Create Release on tag push
@@ -66,9 +78,17 @@ jobs:
         uses: softprops/action-gh-release@v1
         with:
           files: |
-            build/app/outputs/flutter-apk/app-release.apk
+            build/app/outputs/flutter-apk/vin_calculator-arm64.apk
+            build/app/outputs/flutter-apk/vin_calculator-arm32.apk
+            build/app/outputs/flutter-apk/vin_calculator-universal.apk
           generate_release_notes: true
           draft: false
           prerelease: false
+          body: |
+            ## 下载说明
+
+            - **vin_calculator-arm64.apk** - 适用于较新的设备（推荐）
+            - **vin_calculator-arm32.apk** - 适用于较老的设备
+            - **vin_calculator-universal.apk** - 通用版本，体积较大
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
