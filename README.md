@@ -8,7 +8,7 @@
 - 📅 **自动日期** - 自动获取当前日期进行计算
 - 📝 **历史记录** - 本地保存常用车架号，一键快速计算
 - 🎨 **科技UI** - 现代化毛玻璃效果设计
-- 📱 **跨平台** - 支持 Android、iOS、Windows、macOS、Linux
+- 📱 **跨平台** - 支持 Android、iOS、Web、Windows、macOS、Linux
 
 ## 计算公式
 
@@ -22,17 +22,15 @@
 
 适用于奇瑞各种车型，OTA密码与工程密码相同。
 
-## 截图
+## 在线体验
 
-<div align="center">
-  <img src="screenshots/screenshot1.png" alt="应用截图" width="300"/>
-</div>
+Web 版本：https://oliyo2023.github.io/sear.oliyo.com/
 
 ## 安装方式
 
 ### 从 GitHub Releases 下载
 
-1. 前往 [Releases](https://github.com/oliyo2023/vin_calculator/releases) 页面
+1. 前往 [Releases](https://github.com/oliyo2023/sear.oliyo.com/releases) 页面
 2. 下载对应平台的安装包
 3. 安装并运行
 
@@ -40,8 +38,8 @@
 
 ```bash
 # 克隆仓库
-git clone https://github.com/oliyo2023/vin_calculator.git
-cd vin_calculator
+git clone https://github.com/oliyo2023/sear.oliyo.com.git
+cd sear.oliyo.com
 
 # 安装依赖
 flutter pub get
@@ -52,6 +50,7 @@ flutter run
 # 构建发布版本
 flutter build apk --release          # Android APK
 flutter build appbundle --release    # Android App Bundle
+flutter build web --release          # Web
 flutter build windows                # Windows
 flutter build macos                  # macOS
 flutter build ios                    # iOS
@@ -77,8 +76,8 @@ flutter build ios                    # iOS
 
 ## 开发环境
 
-- Flutter SDK: 3.11.5+
-- Dart SDK: 3.11.5+
+- Flutter SDK: 3.41.8+
+- Dart SDK: 3.5.0+
 - Android Studio / VS Code
 
 ## 项目结构
