@@ -11,6 +11,13 @@ on:
 
 permissions:
   contents: write
+  pages: write
+  id-token: write
+
+# Prevent multiple deployments running at the same time
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
 
 jobs:
   build:
@@ -37,25 +44,18 @@ jobs:
         run: flutter config --enable-web
 
       - name: Build Web
-        run: flutter build web --release
+        run: flutter build web --release --base-href "/sear.oliyo.com/"
 
-      - name: Upload Web Build
-        uses: actions/upload-artifact@v4
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v4
         with:
-          name: web-build
-          path: build/web
-          retention-days: 30
+          path: ./build/web
 
-      # Deploy to GitHub Pages on tag push
       - name: Deploy to GitHub Pages
-        if: startsWith(github.ref, 'refs/tags/v')
-        uses: peaceiris/actions-gh-pages@v3
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./build/web
+        id: deployment
+        uses: actions/deploy-pages@v4
 
-      # Create Release with link
-      - name: Create Release
+      - name: Create Release on tag
         if: startsWith(github.ref, 'refs/tags/v')
         uses: softprops/action-gh-release@v1
         with:
@@ -65,46 +65,10 @@ jobs:
           body: |
             ## 在线访问
 
-            Web 版本已部署到 GitHub Pages：https://oliyo2023.github.io/vin_calculator/
+            Web 版本：https://oliyo2023.github.io/sear.oliyo.com/
 
-            ## 本地下载
+            ## 下载
 
-            可以从 Artifacts 下载 web-build 文件夹
+            Android APK 请在 Releases 页面下载
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-  # Deploy to GitHub Pages (alternative way)
-  deploy-pages:
-    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
-    runs-on: ubuntu-latest
-    permissions:
-      pages: write
-      id-token: write
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Set up Flutter
-        uses: subosito/flutter-action@v2
-        with:
-          flutter-version: '3.41.8'
-          channel: 'stable'
-          cache: true
-
-      - name: Install dependencies
-        run: flutter pub get
-
-      - name: Build Web
-        run: flutter build web --release
-
-      - name: Upload artifact
-        uses: actions/upload-pages-artifact@v3
-        with:
-          path: ./build/web
-
-      - name: Deploy to GitHub Pages
-        id: deployment
-        uses: actions/deploy-pages@v4
