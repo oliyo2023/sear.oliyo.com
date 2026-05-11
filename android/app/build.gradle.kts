@@ -8,7 +8,6 @@ plugins {
 android {
     namespace = "com.oliyo.vin_calculator"
     compileSdk = flutter.compileSdkVersion
-    ndkVersion = flutter.ndkVersion
 
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_17
