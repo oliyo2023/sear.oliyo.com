@@ -73,12 +73,16 @@ class _VinCalculatorScreenState extends State<VinCalculatorScreen> {
   Future<void> _loadHistory() async {
     final prefs = await SharedPreferences.getInstance();
     final history = prefs.getStringList('vin_history') ?? [];
+    debugPrint('=== 加载历史记录 ===');
+    debugPrint('加载到 ${history.length} 条记录: $history');
     setState(() {
       _historyList = history;
     });
   }
 
   Future<void> _saveHistory(String vinLastSix) async {
+    debugPrint('=== 保存历史记录 ===');
+    debugPrint('保存: $vinLastSix');
     final prefs = await SharedPreferences.getInstance();
     final history = prefs.getStringList('vin_history') ?? [];
 
@@ -89,16 +93,24 @@ class _VinCalculatorScreenState extends State<VinCalculatorScreen> {
       history.removeLast();
     }
 
+    debugPrint('保存前总数: ${history.length}');
     await prefs.setStringList('vin_history', history);
-    _loadHistory();
+
+    // 验证保存是否成功
+    final saved = prefs.getStringList('vin_history');
+    debugPrint('验证保存: ${saved?.length} 条 - $saved');
+
+    await _loadHistory();
   }
 
   Future<void> _deleteHistoryItem(String vinLastSix) async {
+    debugPrint('=== 删除历史记录 ===');
+    debugPrint('删除: $vinLastSix');
     final prefs = await SharedPreferences.getInstance();
     final history = prefs.getStringList('vin_history') ?? [];
     history.remove(vinLastSix);
     await prefs.setStringList('vin_history', history);
-    _loadHistory();
+    await _loadHistory();
   }
 
   void _calculatePassword(String vin) {
@@ -148,8 +160,10 @@ class _VinCalculatorScreenState extends State<VinCalculatorScreen> {
                       if (_resultPassword.isNotEmpty) ...[
                         const SizedBox(height: 24),
                         _buildResultCard(),
-                        const SizedBox(height: 24),
-                        _buildDivider(),
+                      ],
+                      if (_resultPassword.isNotEmpty && _historyList.isNotEmpty) const SizedBox(height: 24),
+                      if (_resultPassword.isNotEmpty && _historyList.isNotEmpty) _buildDivider(),
+                      if (_historyList.isNotEmpty) ...[
                         const SizedBox(height: 20),
                         _buildHistorySection(),
                       ],
@@ -334,18 +348,13 @@ class _VinCalculatorScreenState extends State<VinCalculatorScreen> {
             ],
           ),
           const SizedBox(height: 16),
-          ShaderMask(
-            shaderCallback: (bounds) => const LinearGradient(
-              colors: [Colors.white, Color(0xFF00D4FF)],
-            ).createShader(bounds),
-            child: Text(
-              _resultPassword,
-              style: const TextStyle(
-                fontSize: 48,
-                fontWeight: FontWeight.bold,
-                color: Colors.white,
-                letterSpacing: 8,
-              ),
+          TypewriterText(
+            text: _resultPassword,
+            textStyle: const TextStyle(
+              fontSize: 48,
+              fontWeight: FontWeight.bold,
+              color: Colors.white,
+              letterSpacing: 8,
             ),
           ),
         ],
@@ -563,6 +572,76 @@ String calculatePassword(String vin, String dateStr) {
       : resultStr.padLeft(6, '0');
 
   return password;
+}
+
+class TypewriterText extends StatefulWidget {
+  final String text;
+  final TextStyle textStyle;
+
+  const TypewriterText({
+    super.key,
+    required this.text,
+    required this.textStyle,
+  });
+
+  @override
+  State<TypewriterText> createState() => _TypewriterTextState();
+}
+
+class _TypewriterTextState extends State<TypewriterText>
+    with SingleTickerProviderStateMixin {
+  late AnimationController _controller;
+  late Animation<int> _charCount;
+  String _displayText = '';
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = AnimationController(
+      duration: const Duration(milliseconds: 800),
+      vsync: this,
+    );
+
+    _charCount = IntTween(begin: 0, end: widget.text.length).animate(
+      CurvedAnimation(parent: _controller, curve: Curves.easeOut),
+    );
+
+    _controller.addListener(() {
+      setState(() {
+        _displayText = widget.text.substring(0, _charCount.value);
+      });
+    });
+
+    _controller.forward();
+  }
+
+  @override
+  void didUpdateWidget(TypewriterText oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.text != widget.text) {
+      _controller.reset();
+      _controller.forward();
+    }
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return ShaderMask(
+      shaderCallback: (bounds) => const LinearGradient(
+        colors: [Colors.white, Color(0xFF00D4FF)],
+      ).createShader(bounds),
+      child: Text(
+        _displayText,
+        style: widget.textStyle,
+      ),
+    );
+  }
 }
 
 String getCurrentDate() {
